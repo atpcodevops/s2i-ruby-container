@@ -183,5 +183,5 @@ Repository organization
 
         * **run**
 
-            Script that runs the [S2I](https://github.com/openshift/source-to-image) test framework.
+            Script that runs the [S2I](https://github.com/openshift/source-to-image) test framework
 
