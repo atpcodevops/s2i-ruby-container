@@ -1,0 +1,67 @@
+{
+	"kind": "List",
+	"apiVersion": "v1",
+	"metadata": {
+		"name": "ruby26:1.0",
+         "description": "Builder image for running java applications"
+	},
+	"items": [{
+			"kind": "BuildConfig",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "ruby26"
+			},
+			"spec": {
+				"triggers": [{
+					"type": "ImageChange",
+					"imageChange": {}
+				}],
+				"source": {
+					"type": "Git",
+					"git": {
+						"uri": "https://github.com/routehappy/s2i-ruby-container",
+						"ref": "master"
+					},
+					"contextDir": "2.6"
+				},
+				"strategy": {
+					"type": "Docker",
+					"dockerStrategy": {
+						"noCache": true,
+						"from": {
+							"kind": "DockerImage",
+							"name": "registry.access.redhat.com/rhscl/s2i-base-rhel7:1"
+						}
+					}
+				},
+				"output": {
+					"to": {
+						"kind": "ImageStreamTag",
+						"name": "ruby26:1.0"
+					}
+				},
+				"resources": {}
+			}
+		},{
+			"kind": "ImageStream",
+			"apiVersion": "v1",
+			"metadata": {
+				"name": "ruby26"
+			},
+			"spec": {
+				"dockerImageRepository": "",
+				"tags": [{
+					"name": "1.0",
+					"annotations": {
+						"description": "ruby base image",
+						"iconClass": "ruby",
+						"tags": "builder,ruby",
+						"supports": "ruby:2.6",
+						"version": "1.0"
+					}
+				}]
+			}
+		}
+
+	]
+}

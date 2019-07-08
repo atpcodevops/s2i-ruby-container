@@ -1,4 +1,4 @@
-FROM centos/s2i-base-centos7
+FROM rhscl/s2i-base-rhel7:1
 
 # This image provides a Ruby environment you can use to run your Ruby
 # applications.
@@ -6,13 +6,13 @@ FROM centos/s2i-base-centos7
 EXPOSE 8080
 
 ENV RUBY_MAJOR_VERSION=2 \
-    RUBY_MINOR_VERSION=5
+    RUBY_MINOR_VERSION=6
 
 ENV RUBY_VERSION="${RUBY_MAJOR_VERSION}.${RUBY_MINOR_VERSION}" \
     RUBY_SCL_NAME_VERSION="${RUBY_MAJOR_VERSION}${RUBY_MINOR_VERSION}"
 
 ENV RUBY_SCL="rh-ruby${RUBY_SCL_NAME_VERSION}" \
-    IMAGE_NAME="centos/ruby-${RUBY_SCL_NAME_VERSION}-centos7" \
+    IMAGE_NAME="rhscl/ruby-${RUBY_SCL_NAME_VERSION}-rhel7" \
     SUMMARY="Platform for building and running Ruby $RUBY_VERSION applications" \
     DESCRIPTION="Ruby $RUBY_VERSION available as container is a base platform for \
 building and running various Ruby $RUBY_VERSION applications and frameworks. \
@@ -29,13 +29,13 @@ LABEL summary="$SUMMARY" \
       com.redhat.component="${RUBY_SCL}-container" \
       name="${IMAGE_NAME}" \
       version="${RUBY_VERSION}" \
+      com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI" \
       usage="s2i build https://github.com/sclorg/s2i-ruby-container.git \
 --context-dir=${RUBY_VERSION}/test/puma-test-app/ ${IMAGE_NAME} ruby-sample-app" \
       maintainer="SoftwareCollections.org <sclorg@redhat.com>"
 
-RUN yum install -y centos-release-scl-rh && \
-    yum-config-manager --add-repo https://cbs.centos.org/repos/sclo7-rh-ruby25-rh-candidate/x86_64/os/ && \
-    echo gpgcheck=0 >> /etc/yum.repos.d/cbs.centos.org_repos_sclo7-rh-ruby25-rh-candidate_x86_64_os_.repo && \
+RUN yum install -y yum-utils && \
+    prepare-yum-repositories rhel-server-rhscl-7-rpms && \
     INSTALL_PKGS=" \
 ${RUBY_SCL} \
 ${RUBY_SCL}-ruby-devel \
