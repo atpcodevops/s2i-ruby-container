@@ -6,7 +6,7 @@ FROM rhscl/s2i-base-rhel7:1
 EXPOSE 8080
 
 ENV RUBY_MAJOR_VERSION=2 \
-    RUBY_MINOR_VERSION=5
+    RUBY_MINOR_VERSION=6
 
 ENV RUBY_VERSION="${RUBY_MAJOR_VERSION}.${RUBY_MINOR_VERSION}" \
     RUBY_SCL_NAME_VERSION="${RUBY_MAJOR_VERSION}${RUBY_MINOR_VERSION}"
@@ -35,7 +35,7 @@ LABEL summary="$SUMMARY" \
       maintainer="SoftwareCollections.org <sclorg@redhat.com>"
 
 RUN yum install -y yum-utils && \
-    prepare-yum-repositories rhel-server-rhscl-7-rpms && \
+    prepare-yum-repositories rhel-server-rhscl-7-rpms rhel-7-server-rpms rhel-7-server-extras-rpms rhel-7-server-ose-3.1-rpms && \
     INSTALL_PKGS=" \
 ${RUBY_SCL} \
 ${RUBY_SCL}-ruby-devel \
